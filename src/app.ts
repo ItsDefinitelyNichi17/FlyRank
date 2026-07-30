@@ -1,4 +1,6 @@
 import express from 'express';
+import swaggerUi from 'swagger-ui-express';
+import fs from 'fs';
 
 let task = [
   { id: 1, title: "Walk Dawg", done: true },
@@ -8,10 +10,16 @@ let task = [
 
 const app = express();
 
-app.use(express.json())
+const openapiSpec = JSON.parse(
+  fs.readFileSync(new URL('./openapi.json', import.meta.url), 'utf-8')
+);
+
+app.use(express.json());
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiSpec));
 
 app.get('/', (req, res) => {
-  res.json({ name: "Task API", version: "1.0", enpoints: ["/tasks"] })
+  res.status(200).json({ name: "Task API", version: "1.0", enpoints: ["/tasks"] })
   return;
 });
 
@@ -20,6 +28,7 @@ app.get('/health', (req, res) => {
   return;
 });
 
+//TASKS
 app.get('/tasks/:id', (req, res) => {
   const { id } = req.params
 
@@ -37,6 +46,11 @@ app.get('/tasks/:id', (req, res) => {
 
 });
 
+app.get('/tasks', (req, res) => {
+  res.status(200).json({ tasks: task });
+  return;
+});
+
 app.post('/tasks', (req, res) => {
   const { title } = req.body;
 
@@ -47,7 +61,7 @@ app.post('/tasks', (req, res) => {
     }
 
     let newObj = {
-      id: task.length - 1,
+      id: task.length + 1,
       title: title,
       done: false
     }
@@ -59,11 +73,6 @@ app.post('/tasks', (req, res) => {
     console.log(e)
     res.status(500).json({ error: "Internal Server Error" })
   }
-  return;
-});
-
-app.get('/tasks', (req, res) => {
-  res.status(200).json({ tasks: task });
   return;
 });
 
@@ -86,14 +95,13 @@ app.put('/tasks/:id', (req, res) => {
     res.status(404).json({ message: "Not found" })
     return;
   }
-
   task[findId] = {
     id: parseInt(id),
     title: title ?? task[findId]!.title,
-    done: done ?? false
+    done: done ?? task[findId]!.done
   };
 
-  res.status(201).json({ updatedTask : task[findId] });
+  res.status(200).json({ updatedTask : task[findId] });
 })
 
 app.delete('/tasks/:id', (req, res) => {
