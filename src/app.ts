@@ -1,6 +1,6 @@
 import express from 'express';
 
-const task = [
+let task = [
   { id: 1, title: "Walk Dawg", done: true },
   { id: 2, title: "Cook Meal", done: true },
   { id: 3, title: "Study", done: true }
@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 app.get('/health', (req, res) => {
   res.status(200).json({ status: "ok" })
   return;
-})
+});
 
 app.get('/tasks/:id', (req, res) => {
   const { id } = req.params
@@ -32,10 +32,10 @@ app.get('/tasks/:id', (req, res) => {
     return;
   }
 
-  res.status(200).json({ task : foundId[0] });
+  res.status(200).json({ task: foundId[0] });
   return
 
-})
+});
 
 app.post('/tasks', (req, res) => {
   const { title } = req.body;
@@ -60,10 +60,54 @@ app.post('/tasks', (req, res) => {
     res.status(500).json({ error: "Internal Server Error" })
   }
   return;
-})
+});
 
 app.get('/tasks', (req, res) => {
   res.status(200).json({ tasks: task });
+  return;
+});
+
+app.put('/tasks/:id', (req, res) => {
+  const { id } = req.params;
+  const { title, done } = req.body;
+
+  let findId = task.findIndex((e) => {
+    return (e.id === parseInt(id))
+  });
+
+  if (title) {
+    if (!title.trim()) {
+      res.status(400).json({ message: "Bad Request: Invalid Body" })
+      return;
+    }
+  }
+
+  if (findId === -1) {
+    res.status(404).json({ message: "Not found" })
+    return;
+  }
+
+  task[findId] = {
+    id: parseInt(id),
+    title: title ?? task[findId]!.title,
+    done: done ?? false
+  };
+
+  res.status(201).json({ updatedTask : task[findId] });
+})
+
+app.delete('/tasks/:id', (req, res) => {
+
+  const { id } = req.params;
+
+  const indexToRemove = task.findIndex((e) => e.id === parseInt(id));
+
+  if (indexToRemove === -1) {
+    res.status(404).json({ message: "Not found" })
+    return;
+  }
+  const removedItem = task.splice(indexToRemove, 1);
+  res.status(204).send();
   return;
 })
 
