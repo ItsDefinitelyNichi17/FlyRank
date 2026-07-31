@@ -4,7 +4,7 @@ import fs from 'fs';
 
 let task = [
   { id: 1, title: "Walk Dawg", done: true },
-  { id: 2, title: "Cook Meal", done: true },
+  { id: 2, title: "Cook Meal", done: false },
   { id: 3, title: "Study", done: true }
 ]
 
@@ -19,7 +19,7 @@ app.use(express.json());
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiSpec));
 
 app.get('/', (req, res) => {
-  res.status(200).json({ name: "Task API", version: "1.0", enpoints: ["/tasks"] })
+  res.status(200).json({ name: "Task API", version: "1.0", enpoints: ["/tasks", "/stats", "/health", "/tasks/:id"] })
   return;
 });
 
@@ -28,7 +28,6 @@ app.get('/health', (req, res) => {
   return;
 });
 
-//TASKS
 app.get('/tasks/:id', (req, res) => {
   const { id } = req.params
 
@@ -47,6 +46,16 @@ app.get('/tasks/:id', (req, res) => {
 });
 
 app.get('/tasks', (req, res) => {
+  const { done, title } = req.query;
+
+  if (done || title) {
+    const filteredTask = task.filter((e) => {
+      return (done ? e.done === (done === 'true') : true) && (title ? e.title.includes(title as string) : true);
+    })
+    res.status(200).json({ tasks: filteredTask });
+    return;
+  }
+
   res.status(200).json({ tasks: task });
   return;
 });
@@ -117,6 +126,13 @@ app.delete('/tasks/:id', (req, res) => {
   const removedItem = task.splice(indexToRemove, 1);
   res.status(204).send();
   return;
+})
+
+app.get('/stats', (req, res) => {
+  const totalTasks = task.length;
+  const doneTasks = task.filter((e) => e.done).length;
+  const openTasks = totalTasks - doneTasks;
+  res.status(200).json({ total: totalTasks, done: doneTasks, open: openTasks });
 })
 
 app.listen(3000, () => {
