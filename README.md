@@ -1,6 +1,11 @@
 # CRUD EXPRESS
 A to-do list that manage data from memory. It involves the creation, deletion, filtering, update and getting the task status/statistics. Check endpoint `/docs` to read all the request of this API using `swagger-ui-express`.
-## HOW TO RUN
+
+## Note to the Evaluator
+I compile all of my tasks in this repository, you can check each history through its designated branches named after
+the task week, act number, and my current course : `W1A1BE`.
+
+## How to run
 * install dependencies using : `npm install`
 * run using : `npm run dev`
 
@@ -16,7 +21,8 @@ A to-do list that manage data from memory. It involves the creation, deletion, f
 | PUT    | /task/:id | Update a record given the parameter id. <br>pass a .json with `title` and/or `done` status.                         |
 | DELETE | /task/:id | Delete a task given the id parameter                                                                                |
 | GET    | /stats    | Returns the status of the to-do list, `{total, done, open}`                                                         |
-## TRY IT
+
+## TRY IT!
 * Using curl : `curl -i -X POST http://localhost:3000/tasks -H "Content-Type: application/json" -d '{"title":"Buy milk"}'`
 
 ## Swagger UI
