@@ -27,4 +27,4 @@ the task week, act number, and my current course : `W1A1BE`.
 
 ## Swagger UI
 End point `/docs` <br>
-![Image](src/swagger-screenshot.png)
+![Image](src/assets/swagger-screenshot.png)
