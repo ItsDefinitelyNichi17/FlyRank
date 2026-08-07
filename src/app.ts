@@ -1,7 +1,7 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';
-
+import { getTask } from './controllers/task.controller.js';
 let task = [
   { id: 1, title: "Walk Dawg", done: true },
   { id: 2, title: "Cook Meal", done: false },
@@ -45,20 +45,7 @@ app.get('/tasks/:id', (req, res) => {
 
 });
 
-app.get('/tasks', (req, res) => {
-  const { done, title } = req.query;
-
-  if (done || title) {
-    const filteredTask = task.filter((e) => {
-      return (done ? e.done === (done === 'true') : true) && (title ? e.title.includes(title as string) : true);
-    })
-    res.status(200).json({ tasks: filteredTask });
-    return;
-  }
-
-  res.status(200).json({ tasks: task });
-  return;
-});
+app.get('/tasks', getTask);
 
 app.post('/tasks', (req, res) => {
   const { title } = req.body;
