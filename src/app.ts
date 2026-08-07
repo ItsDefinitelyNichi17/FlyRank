@@ -1,7 +1,7 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';
-import { getTask } from './controllers/task.controller.js';
+import { getTask, getTaskWithID } from './controllers/task.controller.js';
 let task = [
   { id: 1, title: "Walk Dawg", done: true },
   { id: 2, title: "Cook Meal", done: false },
@@ -28,22 +28,7 @@ app.get('/health', (req, res) => {
   return;
 });
 
-app.get('/tasks/:id', (req, res) => {
-  const { id } = req.params
-
-  const foundId = task.filter((elem) => {
-    return elem.id === parseInt(id);
-  })
-
-  if (foundId.length === 0) {
-    res.status(404).json(`Error Task ${id} not found`);
-    return;
-  }
-
-  res.status(200).json({ task: foundId[0] });
-  return
-
-});
+app.get('/tasks/:id', getTaskWithID)
 
 app.get('/tasks', getTask);
 
