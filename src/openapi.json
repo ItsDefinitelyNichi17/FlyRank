@@ -86,20 +86,14 @@
     "/tasks": {
 
       "get": {
-        "summary": "Get All Tasks or Filter by Done Status",
+        "summary": "Get all tasks, can be filetred by search title",
         "description": "Retrieves list of all tasks",
         "parameters": [
           {
-            "name": "title",
+            "name": "search",
             "in": "query",
-            "description": "Filter tasks by done title",
+            "description": "Filter tasks by done search title",
             "schema": { "type": "string" }
-          },
-          {
-            "name": "done",
-            "in": "query",
-            "description": "Filter tasks by done status",
-            "schema": { "type": "boolean" }
           }
         ],
         "responses": {

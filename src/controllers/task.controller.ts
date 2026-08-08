@@ -3,16 +3,17 @@ import db from "../db.js";
 
 
 export function getTask(req: Request, res: Response) {
-  const { done, title } = req.query;
-  const query = db.prepare("SELECT * FROM tasks").all() as Array<{id : number, title : string, done : boolean}>;
-
+  const { search } = req.query;
+  let query = db.prepare("SELECT * FROM tasks").all() as Array<{ id: number, title: string, done: boolean }>;
+  if (search) {
+    query = db.prepare("SELECT * FROM tasks WHERE title LIKE ?").all(search + '%') as Array<{id : number, title : string, done : boolean}>;
+  }
   const result = query.map((e) => {
     return {
       ...e,
       done : e.done ? true : false
     }
   })
-
   res.status(200).json({ tasks: result })
   return;
 }
