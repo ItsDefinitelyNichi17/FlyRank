@@ -1,7 +1,7 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import fs from 'fs';
-import { getTask, getTaskWithID } from './controllers/task.controller.js';
+import { getTask, getTaskWithID, postTask } from './controllers/task.controller.js';
 let task = [
   { id: 1, title: "Walk Dawg", done: true },
   { id: 2, title: "Cook Meal", done: false },
@@ -32,30 +32,8 @@ app.get('/tasks/:id', getTaskWithID)
 
 app.get('/tasks', getTask);
 
-app.post('/tasks', (req, res) => {
-  const { title } = req.body;
 
-  try {
-    if (!title || !title.trim()) {
-      res.status(400).json({ error: "Bad Request : Please define a title" });
-      return;
-    }
-
-    let newObj = {
-      id: task.length + 1,
-      title: title,
-      done: false
-    }
-
-    task.push(newObj);
-    res.status(201).json({ newtask: newObj })
-
-  } catch (e) {
-    console.log(e)
-    res.status(500).json({ error: "Internal Server Error" })
-  }
-  return;
-});
+app.post('/tasks', postTask);
 
 app.put('/tasks/:id', (req, res) => {
   const { id } = req.params;
