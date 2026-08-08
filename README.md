@@ -51,6 +51,7 @@ sqlite3 task.db
 
 <br>
 Then run the commands above to try the database!
+
 ### Sample
 Sample Table from with the use of sqlite3 CLI 
 <br>
