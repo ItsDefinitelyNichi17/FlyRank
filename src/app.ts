@@ -37,13 +37,13 @@ app.post('/tasks', postTask);
 
 app.put('/tasks/:id', updateTask);
 
-app.delete('/tasks/:id', deleteTask)
+app.delete('/tasks/:id', deleteTask);
 
 app.get('/stats', (req, res) => {
   const totalTasks = task.length;
   const doneTasks = task.filter((e) => e.done).length;
   const openTasks = totalTasks - doneTasks;
   res.status(200).json({ total: totalTasks, done: doneTasks, open: openTasks });
-})
+});
 
 app.listen(3000, () => {  console.log("Hello World, Server is at 3000");});

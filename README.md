@@ -1,5 +1,5 @@
 # CRUD EXPRESS
-A to-do list that manage data from memory. It involves the creation, deletion, filtering, update and getting the task status/statistics. Check endpoint `/docs` to read all the request of this API using `swagger-ui-express`.
+A to-do list that manage data usng SQLite. It involves the creation, deletion, filtering, update and getting the task status/statistics. Check endpoint `/docs` to read all the request of this API using `swagger-ui-express`.
 
 ## Note to the Evaluator
 I compile all of my tasks in this repository, you can check each history through its designated branches named after
@@ -8,6 +8,7 @@ the task week, act number, and my current course : `W1A1BE`.
 ## How to run
 * install dependencies using : `npm install`
 * run using : `npm run dev`
+* to insert on table : `npm run seed`
 
 ## Table of all Enpoints
 
@@ -28,3 +29,18 @@ the task week, act number, and my current course : `W1A1BE`.
 ## Swagger UI
 End point `/docs` <br>
 ![Image](src/assets/swagger-screenshot.png)
+
+## SQL
+To test the database using SQLite, you can run these command on your respective engine viewer.
+* `SELECT * FROM tasks;` : This displays the table consist of all tasks
+* `DROP TABLE tasks;` : This drops the table named task, you can create a table using `npm run seed` which also creates mock data. you can also check the [schema.sql](src/schema/task.schema.sql) to create a table
+* `DELETE FROM tasks;`: Delete all record inside the table
+<br>
+<br>
+if you are running this on sqlite3, you can connect to the task.db by running this inside the project:
+```
+sqlite3 task.db
+.open task.db
+```
+<br>
+Then run the commands above to try the database!
