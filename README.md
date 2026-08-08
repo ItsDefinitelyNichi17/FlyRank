@@ -38,6 +38,7 @@ To test the database using SQLite, you can run these command on your respective 
 <br>
 <br>
 if you are running this on sqlite3, you can connect to the task.db by running this inside the project:
+<br>
 ```
 sqlite3 task.db
 .open task.db
